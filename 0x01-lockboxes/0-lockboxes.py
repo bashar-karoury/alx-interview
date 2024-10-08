@@ -19,6 +19,8 @@ def check_box(n):
 
 def canUnlockAll(boxes):
     global boxes_g, boxes_states
+    if not boxes:
+        return False
     len_boxes = len(boxes)
     boxes_states = [0] * len_boxes
     boxes_g = boxes

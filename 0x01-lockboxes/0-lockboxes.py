@@ -22,6 +22,11 @@ def check_box(n, boxes, boxes_states):
 
 
 def canUnlockAll(boxes):
+    """ Function to determine if all boxes can be opened
+        Args:
+            boxes: (list of lists of int)
+        return: True if all boxes can be opened, False else
+    """
     if boxes is None or type(boxes) is not list:
         return False
     len_boxes = len(boxes)

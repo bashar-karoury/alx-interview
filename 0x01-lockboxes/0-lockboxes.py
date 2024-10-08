@@ -9,7 +9,7 @@ def check_box(n):
     check nth box, mark opened box and go on till no key
     is found or visited box already opened
     """
-    if n is None or boxes_states[n] == 1:
+    if n is None or n >= len(boxes_g) or boxes_states[n] == 1:
         return
     # mark that box as opened
     boxes_states[n] = 1

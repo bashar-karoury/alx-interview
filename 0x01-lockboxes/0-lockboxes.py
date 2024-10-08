@@ -19,9 +19,11 @@ def check_box(n):
 
 def canUnlockAll(boxes):
     global boxes_g, boxes_states
-    if not boxes:
+    if boxes is None:
         return False
     len_boxes = len(boxes)
+    if len_boxes == 0:
+        return True
     boxes_states = [0] * len_boxes
     boxes_g = boxes
     # first box is already opened

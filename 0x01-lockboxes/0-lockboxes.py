@@ -13,7 +13,7 @@ def check_box(n):
         return
     # mark that box as opened
     if type(boxes_g[n]) is not list:
-        return 
+        return
     boxes_states[n] = 1
     for box in boxes_g[n]:
         check_box(box)

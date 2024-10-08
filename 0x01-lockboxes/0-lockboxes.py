@@ -12,6 +12,8 @@ def check_box(n):
     if n is None or n >= len(boxes_g) or boxes_states[n] == 1:
         return
     # mark that box as opened
+    if type(boxes_g[n]) is not list:
+        return 
     boxes_states[n] = 1
     for box in boxes_g[n]:
         check_box(box)

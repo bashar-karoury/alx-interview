@@ -21,7 +21,7 @@ def canUnlockAll(boxes):
     unvisited_boxes = set(boxes[0])
     while (len(unvisited_boxes)):
         box = unvisited_boxes.pop()
-        if not box or box in checked_boxes:
+        if not box or box in checked_boxes or box >= len(boxes):
             continue
         if type(boxes[box]) is not list:
             return False

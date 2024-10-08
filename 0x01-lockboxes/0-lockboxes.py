@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 """ Solution to canUnlockAll Challenge"""
-boxes_states = []
-boxes_g = []
 
 
 def check_box(n, boxes, boxes_states):

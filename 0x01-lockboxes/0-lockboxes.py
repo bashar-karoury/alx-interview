@@ -23,10 +23,12 @@ def canUnlockAll(boxes):
         box = unvisited_boxes.pop()
         if not box or box in checked_boxes:
             continue
+        if type(boxes[box]) is not list:
+            return False
         # add box keys to unvisited boxes
         if box > 0 and box < len(boxes):
             unvisited_boxes.update(boxes[box])
-                # add box to checked_boxes
+        # add box to checked_boxes
         checked_boxes.add(box)
 
     return len(checked_boxes) == len(boxes)

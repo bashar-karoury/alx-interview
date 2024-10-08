@@ -31,7 +31,20 @@ def canUnlockAll(boxes):
     len_boxes = len(boxes)
     if len_boxes == 0:
         return True
-    boxes_states = [0] * len_boxes
+
     # first box is already opened
-    check_box(0, boxes, boxes_states)
-    return all(box_state == 1 for box_state in boxes_states)
+    checked_boxes = set([0])
+    if type(boxes[0]) is not list:
+        return False
+    unvisited_boxes = set(boxes[0])
+    while (len(unvisited_boxes)):
+        box = unvisited_boxes.pop()
+        if box in checked_boxes:
+            continue
+        # add box to checked_boxes
+        checked_boxes.add(box)
+        # add box keys to unvisited boxes
+        if box < len(boxes):
+            unvisited_boxes.update(boxes[box])
+
+    return len(checked_boxes) == len(boxes)

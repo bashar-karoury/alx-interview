@@ -7,7 +7,7 @@ def check_box(n, boxes, boxes_states):
     check nth box, mark opened box and go on till no key
     is found or visited box already opened
     """
-    if n is None or type(n) is not int or n >= len(boxes):
+    if n is None or type(n) is not int or n >= len(boxes) or n < 0:
         return
 
     if boxes_states[n] == 1:

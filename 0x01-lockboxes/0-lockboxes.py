@@ -23,7 +23,7 @@ def canUnlockAll(boxes):
         return False
     len_boxes = len(boxes)
     if len_boxes == 0:
-        return True
+        return False
     boxes_states = [0] * len_boxes
     boxes_g = boxes
     # first box is already opened

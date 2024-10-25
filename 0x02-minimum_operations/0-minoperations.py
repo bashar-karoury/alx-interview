@@ -36,7 +36,6 @@ def minOperations(n):
         return 0
     # get primal factors
     factors = getPrimeFactors(n)
-    print("factors ", factors)
     sum = 0
     for factor in factors:
         sum = sum + factor

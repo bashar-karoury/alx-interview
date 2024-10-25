@@ -32,6 +32,9 @@ def minOperations(n):
             n: number of H to be represented
         Return: minimum number of operations
     """
+
+    if n <= 0:
+        return 0
     if n == 1:
         return 0
     # get primal factors

@@ -15,7 +15,7 @@ def getPrimeFactors(n):
     for i in range(3, int(n ** 0.5), 2):
         while n % i == 0:
             factors.append(i)
-            n == n // i
+            n = n // i
 
     if n > 2:
         factors.append(n)
@@ -36,6 +36,7 @@ def minOperations(n):
         return 0
     # get primal factors
     factors = getPrimeFactors(n)
+    print("factors ", factors)
     sum = 0
     for factor in factors:
         sum = sum + factor

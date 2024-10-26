@@ -5,7 +5,6 @@ based on the specified log format.
 """
 
 import sys
-import re
 
 
 if __name__ == '__main__':
@@ -36,24 +35,14 @@ if __name__ == '__main__':
     try:
         for line in sys.stdin:
             lines_processed += 1
-            # Define a regular expression pattern for the expected input format
-            pattern = re.compile(
-                r'^\d{1,3}(?:\.\d{1,3}){3} - \[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+\] "GET /projects/260 HTTP/1\.1" (\d{3}) (\d+)$'
-            )
-            match = pattern.match(line.strip())
-
-            # Skip lines that don't match the expected format
+            data = line.split()
             try:
-                if match:
-                    status_code = match.group(1)
-                    int(status_code)
-                    file_size = int(match.group(2))
-                    if status_code in stats:
-                        stats[status_code] += 1
-                    total_size += file_size
+                status_code = data[-2]
+                if status_code in stats:
+                    stats[status_code] += 1
+                total_size += int(data[-1])
             except BaseException:
                 pass
-
             if lines_processed % 10 == 0:
                 print_statistics(stats, total_size)
         print_statistics(stats, total_size)

@@ -46,16 +46,16 @@ if __name__ == '__main__':
             try:
                 if match:
                     status_code = match.group(1)
+                    int(status_code)
                     file_size = int(match.group(2))
+                    if status_code in stats:
+                        stats[status_code] += 1
+                    total_size += file_size
                 else:
                     continue
             except BaseException:
                 continue
 
-            if status_code in stats:
-                stats[status_code] += 1
-
-            total_size += file_size
             if lines_processed % 10 == 0:
                 print_statistics(stats, total_size)
         print_statistics(stats, total_size)

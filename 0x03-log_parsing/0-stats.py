@@ -2,12 +2,20 @@
 """ reads stdin line by line and computes metrics """
 import sys
 import re
+
+
+def printStats(total_file_size, status_report_dic):
+    """ print stats """
+    print(f'File size: {total_file_size}')
+    for key, value in dict(sorted(status_report_dic.items())).items():
+        print(f'{key}: {value}')
+
+
 count = 0
 status_report_dic = {}
 total_file_size = 0
 try:
     for line in sys.stdin:
-        # print(line)
         pattern = r'(?:\d{1,3}(?:\.\d{1,3}){3}) - \[(?:\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+)\] ".*?" (\d+) (\d+)$'
 
         m = re.search(pattern, line)
@@ -30,10 +38,7 @@ try:
         count += 1
         if count >= 10:
             count = 0
-            print(f'File size: {total_file_size}')
-            for key, value in dict(sorted(status_report_dic.items())).items():
-                print(f'{key}: {value}')
+            printStats(total_file_size, status_report_dic)
 except KeyboardInterrupt:
-    print(f'File size: {total_file_size}')
-    for key, value in dict(sorted(status_report_dic.items())).items():
-        print(f'{key}: {value}')
+    printStats(total_file_size, status_report_dic)
+    raise

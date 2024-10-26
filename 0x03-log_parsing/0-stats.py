@@ -23,4 +23,6 @@ try:
             for key, value in dict(sorted(status_report_dic.items())).items():
                 print(f'{key}: {value}')
 except KeyboardInterrupt:
-    print("Exception Keyboard Interrupt")
+    print(f'File size: {total_file_size}')
+    for key, value in dict(sorted(status_report_dic.items())).items():
+        print(f'{key}: {value}')

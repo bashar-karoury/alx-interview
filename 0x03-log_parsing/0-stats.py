@@ -14,7 +14,7 @@ try:
             int(status)
         except Exception:
             continue
-        if status not in [200, 301, 400, 401, 403, 404, 405, 500]:
+        if status not in ['200', '301', '400', '401', '403', '404', '405', '500']:
             continue
         file_size = m.group(2)
         total_file_size = total_file_size + int(file_size)

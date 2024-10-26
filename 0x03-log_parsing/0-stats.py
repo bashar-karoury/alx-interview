@@ -51,10 +51,8 @@ if __name__ == '__main__':
                     if status_code in stats:
                         stats[status_code] += 1
                     total_size += file_size
-                else:
-                    continue
             except BaseException:
-                continue
+                pass
 
             if lines_processed % 10 == 0:
                 print_statistics(stats, total_size)

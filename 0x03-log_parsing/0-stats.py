@@ -2,6 +2,21 @@
 """ reads stdin line by line and computes metrics """
 import sys
 import re
+import signal
+
+# Signal handler for keyboard interruption
+count = 0
+status_report_dic = {}
+total_file_size = 0
+
+
+def signal_handler(sig, frame):
+    printStats(total_file_size, status_report_dic)
+    sys.exit(0)
+
+
+# Register the signal handler for CTRL+C
+signal.signal(signal.SIGINT, signal_handler)
 
 
 def printStats(total_file_size, status_report_dic):
@@ -11,14 +26,11 @@ def printStats(total_file_size, status_report_dic):
         print(f'{key}: {value}')
 
 
-count = 0
-status_report_dic = {}
-total_file_size = 0
 try:
     for line in sys.stdin:
         pattern = r'(?:\d{1,3}(?:\.\d{1,3}){3}) - \[(?:\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+)\] ".*?" (\d+) (\d+)$'
 
-        m = re.search(pattern, line)
+        m = re.search(pattern, line.strip())
         if not m:
             continue
         status = m.group(1)
@@ -30,6 +42,10 @@ try:
                           '403', '404', '405', '500']:
             continue
         file_size = m.group(2)
+        try:
+            int(file_size)
+        except Exception:
+            continue
         total_file_size = total_file_size + int(file_size)
         try:
             status_report_dic[status] = status_report_dic[status] + 1
@@ -40,5 +56,5 @@ try:
             count = 0
             printStats(total_file_size, status_report_dic)
 except KeyboardInterrupt:
+    print("Interruption------------")
     printStats(total_file_size, status_report_dic)
-    raise

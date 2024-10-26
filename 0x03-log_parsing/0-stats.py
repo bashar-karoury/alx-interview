@@ -4,57 +4,57 @@ import sys
 import re
 import signal
 
-# Signal handler for keyboard interruption
-count = 0
-status_report_dic = {}
+# Initialize counters
 total_file_size = 0
+status_code_counts = {code: 0 for code in [
+    200, 301, 400, 401, 403, 404, 405, 500]}
+count = 0
+
+# Define a regular expression pattern for the expected input format
+pattern = re.compile(
+    r'^\d{1,3}(?:\.\d{1,3}){3} - \[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+\] "GET /projects/260 HTTP/1\.1" (\d{3}) (\d+)$'
+)
+
+# Function to print the metrics
+
+
+def print_metrics():
+    print(f"File size: {total_file_size}")
+    for code in sorted(status_code_counts.keys()):
+        if status_code_counts[code] > 0:
+            print(f"{code}: {status_code_counts[code]}")
+
+# Signal handler for keyboard interruption
 
 
 def signal_handler(sig, frame):
-    printStats(total_file_size, status_report_dic)
+    print_metrics()
     sys.exit(0)
 
 
 # Register the signal handler for CTRL+C
 signal.signal(signal.SIGINT, signal_handler)
 
-
-def printStats(total_file_size, status_report_dic):
-    """ print stats """
-    print(f'File size: {total_file_size}')
-    for key, value in dict(sorted(status_report_dic.items())).items():
-        print(f'{key}: {value}')
-
-
 try:
+    # Read each line from standard input
     for line in sys.stdin:
-        pattern = r'(?:\d{1,3}(?:\.\d{1,3}){3}) - \[(?:\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+)\] ".*?" (\d+) (\d+)$'
+        match = pattern.match(line.strip())
 
-        m = re.search(pattern, line.strip())
-        if not m:
-            continue
-        status = m.group(1)
-        try:
-            int(status)
-        except Exception:
-            continue
-        if status not in ['200', '301', '400', '401',
-                          '403', '404', '405', '500']:
-            continue
-        file_size = m.group(2)
-        try:
-            int(file_size)
-        except Exception:
-            continue
-        total_file_size = total_file_size + int(file_size)
-        try:
-            status_report_dic[status] = status_report_dic[status] + 1
-        except KeyError:
-            status_report_dic[status] = 1
-        count += 1
-        if count >= 10:
-            count = 0
-            printStats(total_file_size, status_report_dic)
+        # Skip lines that don't match the expected format
+        if match:
+            status_code = int(match.group(1))
+            file_size = int(match.group(2))
+
+            # Update total file size and status code count
+            total_file_size += file_size
+            if status_code in status_code_counts:
+                status_code_counts[status_code] += 1
+
+            # Print metrics every 10 lines
+            count += 1
+            if count == 10:
+                print_metrics()
+                count = 0
 except KeyboardInterrupt:
-    print("Interruption------------")
-    printStats(total_file_size, status_report_dic)
+    # Handle keyboard interrupt and print final metrics
+    print_metrics()

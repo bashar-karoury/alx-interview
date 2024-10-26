@@ -7,8 +7,12 @@ status_report_dic = {}
 total_file_size = 0
 try:
     for line in sys.stdin:
-        pattern = r'(\d+)\s+(\d+)$'
+        # print(line)
+        pattern = r'(?:\d{1,3}(?:\.\d{1,3}){3}) - \[(?:\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+)\] ".*?" (\d+) (\d+)$'
+
         m = re.search(pattern, line)
+        if not m:
+            continue
         status = m.group(1)
         try:
             int(status)

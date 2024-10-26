@@ -20,7 +20,7 @@ try:
         if count >= 10:
             count = 0
             print(f'File size: {total_file_size}')
-            for key, value in status_report_dic.items():
+            for key, value in dict(sorted(status_report_dic.items())).items():
                 print(f'{key}: {value}')
 except KeyboardInterrupt:
     print("Exception Keyboard Interrupt")

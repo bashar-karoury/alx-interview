@@ -22,12 +22,12 @@ def validUTF8(data):
 
         # get byte
         byte = data[idx] & 0xFF
-        print(f'byte {byte:#X} at idx {idx}')
+        # print(f'byte {byte:#X} at idx {idx}')
         if (
                 byte in [0xC0, 0xC1] or
                 (byte >= 0xF5 and byte <= 0xFF) or
                 (byte >= 0x80 and byte <= 0xBF)):
-            print(f'Incorrect starting byte {byte:#X} at index {idx}')
+            # print(f'Incorrect starting byte {byte:#X} at index {idx}')
             return False
 
         # Code point ↔ UTF-8 conversion
@@ -40,30 +40,31 @@ def validUTF8(data):
         # get sequence type
         if (byte >> 7 == 0x0):
             # One Byte Sequence
-            print('----One byte Sequence')
+            # print('----One byte Sequence')
+            pass
         if (byte >> 5 == 0x6):
-            print('----Two byte Sequence')
+            # print('----Two byte Sequence')
             # Two bytes sequence
             # check next byte
             nextByte = data[idx + 1] & 0xFF
             if nextByte < 0x80 or nextByte > 0xC0:
                 # should be a continues byte
-                print('Error, should be continues byte ', nextByte)
+                # print('Error, should be continues byte ', nextByte)
                 return False
             else:
                 # skip next byte; already checked
                 idx += 1
 
         if (byte >> 4 == 0x0E):
-            print('----Three byte Sequence')
+            # print('----Three byte Sequence')
             # Three bytes sequences
             # get first byte
             # check second byte is a continues byte
             secondByte = data[idx + 1] & 0xFF
-            print(f'Second byte {secondByte:#X}')
+            # print(f'Second byte {secondByte:#X}')
             if secondByte < 0x80 or secondByte > 0xC0:
                 # should be a continues byte
-                print('Error, should be continues byte ', secondByte)
+                # print('Error, should be continues byte ', secondByte)
                 return False
             else:
                 # check thrid byte
@@ -71,28 +72,26 @@ def validUTF8(data):
                 thirdByte = data[idx + 1] & 0xFF
                 if thirdByte < 0x80 or thirdByte > 0xC0:
                     # should be a continues byte
-                    print('Error, should be continues byte ', thirdByte)
+                    # print('Error, should be continues byte ', thirdByte)
                     return False
                 else:
                     # check for overlong encoding
                     wholeData = ((byte & 0x0F) << 12) | (
                         (secondByte & 0x3F) << 6) | (thirdByte & 0x3F)
                     if wholeData < 0x0800:
-                        print(
-                            f'first: {byte:#X} - Second: {secondByte:#X} - third: {thirdByte:#X}')
-                        print('overlong error ', wholeData)
+                        # print('overlong error ', wholeData)
                         return False
                     idx += 1
 
         if (byte >> 4 == 0x0F):
-            print('----Four byte Sequence')
+            # print('----Four byte Sequence')
             # Three bytes sequences
             # get first byte
             # check second byte is a continues byte
             secondByte = data[idx + 1] & 0xFF
             if secondByte < 0x80 or secondByte > 0xC0:
                 # should be a continues byte
-                print('Error, should be continues byte ', secondByte)
+                # print('Error, should be continues byte ', secondByte)
                 return False
             else:
                 # check thrid byte
@@ -100,7 +99,7 @@ def validUTF8(data):
                 thirdByte = data[idx + 1] & 0xFF
                 if thirdByte < 0x80 or thirdByte > 0xC0:
                     # should be a continues byte
-                    print('Error, should be continues byte ', thirdByte)
+                    # print('Error, should be continues byte ', thirdByte)
                     return False
                 else:
                     # check thrid byte
@@ -108,7 +107,7 @@ def validUTF8(data):
                     fourthByte = data[idx + 1] & 0xFF
                     if fourthByte < 0x80 or fourthByte > 0xC0:
                         # should be a continues byte
-                        print('Error, should be continues byte ', fourthByte)
+                        # print('Error, should be continues byte ', fourthByte)
                         return False
                     else:
                         # check for overlong encoding
@@ -118,11 +117,11 @@ def validUTF8(data):
                             ((thirdByte & 0x3F) << 6) |
                             (fourthByte & 0x3F))
                         if wholeData < 0x010000:
-                            print('overlong error ', wholeData)
+                            # print('overlong error ', wholeData)
                             return False
                         # check for value greater that U+10FFFF
                         elif (wholeData > 0x10FFFF):
-                            print('out of range error ', wholeData)
+                            # print('out of range error ', wholeData)
                             return False
                         idx += 1
         idx += 1

@@ -88,7 +88,7 @@ if __name__ == '__main__':
         for spot in avai_spots:
             if spot not in flattened_correct_solutions:
                 explore_solution_starting_from(
-                    spot, deepcopy(prop_sol), deepcopy(board_sol))
+                    spot, prop_sol, board_sol)
 
     def start(board):
         for spot in next_availabe_spots(board):

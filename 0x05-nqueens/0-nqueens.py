@@ -78,17 +78,16 @@ if __name__ == '__main__':
         if not len(avai_spots):
             # check if len of proposed solution == size
             # print('len of solution is ', len(prop_sol))
-            if (len(prop_sol) == size) and prop_sol not in Solutions:
+            prop_sol.sort()
+            if (len(prop_sol) == size and prop_sol not in Solutions):
                 Solutions.append(prop_sol)
             # print_solutions()
             return
-        flattened_correct_solutions = [
-            cell for sol in Solutions for cell in sol]
-        # print(flattened_correct_solutions)
+        # print()
         for spot in avai_spots:
-            if spot not in flattened_correct_solutions:
-                explore_solution_starting_from(
-                    spot, deepcopy(prop_sol), deepcopy(board_sol))
+            # if spot not in flattened_correct_solutions:
+            explore_solution_starting_from(
+                spot, deepcopy(prop_sol), deepcopy(board_sol))
 
     def start(board):
         for spot in next_availabe_spots(board):

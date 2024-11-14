@@ -94,6 +94,34 @@ if __name__ == '__main__':
             explore_solution_starting_from(
                 spot, [].copy(), deepcopy(board))
 
-    start(board)
-    # print('Solutions----')
+    # start(board)
+
+    def explore(row, col, board, prop_sol):
+        # print(f'Now in row{row}, col{col}')
+        if row >= size - 1:
+            # rows completed so stop with the proposed sol
+            # push sol to solutions
+            prop_sol.append((row, col))
+            # print(f'appending{prop_sol} to Solutions')
+            Solutions.append(prop_sol)
+            return True
+        # check if there is a way to place q in next row
+        if row >= 0:
+            mark_cell(row, col, board)
+            # push cell to solution
+            prop_sol.append((row, col))
+            # print('prop sol ', prop_sol)
+        row += 1
+        for col in range(size):
+            # print(f'exploring({row},{col}')
+            # exploring all cols of next row
+            if board[row][col] == 0:
+                # print('row', row, end='')
+                # print(' col', col)
+                # print_board(board)
+                explore(row, col, deepcopy(board), deepcopy(prop_sol))
+        # print('Failed Attempt')
+        return False
+
+    explore(-1, 0, deepcopy(board), deepcopy([]))
     print_solutions()

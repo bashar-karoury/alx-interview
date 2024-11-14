@@ -37,43 +37,6 @@ if __name__ == '__main__':
         for row in reversed(board):
             print(row)
 
-    def explore_queen(board):
-        # scan board for first availabe location
-        i, j = get_available_location(board)
-        if i and j:
-            # starting from that cell, get next possible location and go on
-            if good_cell(board, i, j):
-                pass
-
-    def get_available_location(board):
-        for i in len(board):
-            for j in len(board):
-                if board[i][j] == 0:
-                    return i, j
-        return None, None
-
-    def good_cell(board, i, j):
-        # check row
-        for _ in range(len(board)):
-            if _ != i and board[i, _] == 1:
-                return False
-        # check col
-        for _ in range(len(board)):
-            if _ != j and board[_, j] == 1:
-                return False
-        # check diagnoal
-        for _ in range(len(board)):
-            if board[i, _] == 1:
-                return False
-
-    # start with first cell, choose it and try to find solution based on that choice
-    # be assign it to the proposed solution and go on to place next queen in first available
-    # cell and go on till all board cells are covered or solution is captured
-
-    def place_next_queen(i, j, board_sol):
-        pass
-        # explore next availabe spot
-
     def mark_diag(_i, _j, i_inc, j_inc, board_sol):
         while (_i >= 0 and _i < size) and (_j >= 0 and _j < size):
             board_sol[_i][_j] = 1
@@ -95,47 +58,32 @@ if __name__ == '__main__':
         mark_diag(i, j, 1, -1, board_sol)
         mark_diag(i, j, -1, 1, board_sol)
 
-    def next_availabe_spot(board_sol):
+    def next_availabe_spots(board_sol):
+        available_spots = []
         for _i in range(size):
             for _j in range(size):
                 if not board_sol[_i][_j]:
-                    return _i, _j
-        return None, None
+                    available_spots.append(_i, _j)
+        return available_spots
 
-    def explore_solution_starting_from(i, j):
-        # starting from that cell, place the first queen and initiate a propsed solution and go on
-        prop_sol = []
-        prop_sol.append((i, j))
-        board_sol = [[0 for _ in range(n)] for i in range(n)]
+    def explore_solution_starting_from(prop_sol, board_sol):
+        # get remaining available spots
+        avai_spots = next_availabe_spots(board_sol)
+        if not len(avai_spots):
+            # check if len of proposed solution == size
+            print('len of solution is ', len(prop_sol))
+            if (len(prop_sol) == size):
+                Solutions.append(prop_sol)
 
-        # mark all ver, hor, diag cells
-        mark_cell(i, j, board_sol)
-        print_board(board_sol)
-        # place next queen
-        while (True):
-            # get next availabe place
-            next_i, next_j = next_availabe_spot(board_sol)
-            # print(next_i, next_j)
-            if next_i is None or next_j is None:
-                break
-            mark_cell(next_i, next_j, board_sol)
-            prop_sol.append((next_i, next_j))
-            # print_board(board_sol)
-        # count no. of cells
-        print('len of solution is ', len(prop_sol))
-        if (len(prop_sol) == size):
-            return prop_sol
-        else:
-            return None
+        for spot in avai_spots:
+            # mark cell
+            mark_cell(*spot, board_sol)
+            # append to proposed sol
+            prop_sol.append(spot)
+            explore_solution_starting_from(*spot)
 
     def start(board):
-        for i in range(size):
-            for j in range(size):
-                if (i, j) not in [cell for solution in Solutions for cell in solution]:
-                    sol = explore_solution_starting_from(i, j)
-                    if sol:
-                        Solutions.append(sol)
-
+        explore_solution_starting_from([], board)
     start(board)
     print('Solutions----')
     print(Solutions)

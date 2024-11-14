@@ -1,16 +1,9 @@
 #!/usr/bin/env python3
 """ N queens problem
 """
-# If the user called the program with the wrong number of arguments, print Usage: nqueens N, followed by a new line, and exit with the status 1
-# where N must be an integer greater or equal to 4
-# If N is not an integer, print N must be a number, followed by a new line, and exit with the status 1
-# If N is smaller than 4, print N must be at least 4, followed by a new line, and exit with the status 1
-# The program should print every possible solution to the problem
-# One solution per line
-# Format: see example
-# You don’t have to print the solutions in a specific order
-# You are only allowed to import the sys module
+
 import sys
+from copy import deepcopy
 if __name__ == '__main__':
     # check arguments
     if len(sys.argv) != 2:
@@ -36,6 +29,10 @@ if __name__ == '__main__':
         print('---------------------------------')
         for row in reversed(board):
             print(row)
+
+    def print_solutions():
+        for sol in Solutions:
+            print(sol)
 
     def mark_diag(_i, _j, i_inc, j_inc, board_sol):
         while (_i >= 0 and _i < size) and (_j >= 0 and _j < size):
@@ -63,27 +60,41 @@ if __name__ == '__main__':
         for _i in range(size):
             for _j in range(size):
                 if not board_sol[_i][_j]:
-                    available_spots.append(_i, _j)
+                    available_spots.append((_i, _j))
         return available_spots
 
-    def explore_solution_starting_from(prop_sol, board_sol):
+    def explore_solution_starting_from(spot, prop_sol, board_sol):
+        # print('Debugging#######################')
+        # mark cell
+        mark_cell(*spot, board_sol)
+        # append to proposed sol
+        if spot not in prop_sol:
+            prop_sol.append(spot)
+
         # get remaining available spots
         avai_spots = next_availabe_spots(board_sol)
+        # print('len of ava spots', len(avai_spots))
+
         if not len(avai_spots):
             # check if len of proposed solution == size
-            print('len of solution is ', len(prop_sol))
-            if (len(prop_sol) == size):
+            # print('len of solution is ', len(prop_sol))
+            if (len(prop_sol) == size) and prop_sol not in Solutions:
                 Solutions.append(prop_sol)
-
+            # print_solutions()
+            return
+        flattened_correct_solutions = [
+            cell for sol in Solutions for cell in sol]
+        # print(flattened_correct_solutions)
         for spot in avai_spots:
-            # mark cell
-            mark_cell(*spot, board_sol)
-            # append to proposed sol
-            prop_sol.append(spot)
-            explore_solution_starting_from(*spot)
+            if spot not in flattened_correct_solutions:
+                explore_solution_starting_from(
+                    spot, deepcopy(prop_sol), deepcopy(board_sol))
 
     def start(board):
-        explore_solution_starting_from([], board)
+        for spot in next_availabe_spots(board):
+            explore_solution_starting_from(
+                spot, deepcopy([]), deepcopy(board))
+
     start(board)
-    print('Solutions----')
-    print(Solutions)
+    # print('Solutions----')
+    print_solutions()

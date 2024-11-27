@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""  Change comes from within """
 
 
 def makeChange(coins, total):

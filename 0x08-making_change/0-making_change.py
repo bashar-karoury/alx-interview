@@ -11,7 +11,7 @@ def makeChange(coins, total):
     result = 0
 
     # sort coins
-    coins.sort(reverse = True)
+    coins.sort(reverse=True)
 
     # start wit greatest coin
     # current_idx = 0
@@ -19,6 +19,9 @@ def makeChange(coins, total):
     current_coin = coins[idx]
 
     # print('coins: ', coins)
+    if total < coins[-1]:
+        return -1
+
     while (total > 0 and idx < len(coins)):
         if total >= coins[idx]:
             total -= coins[idx]

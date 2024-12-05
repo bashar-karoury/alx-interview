@@ -76,6 +76,8 @@ def island_perimeter(grid):
     initialized_visited_grid(grid)
 
     # get first land square cordinates
+    if not get_first_land_square(grid):
+        return 0
     row, col = get_first_land_square(grid)
     # starting from first square
     calulate_parameters(grid, row, col)

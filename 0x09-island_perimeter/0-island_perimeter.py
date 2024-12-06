@@ -13,30 +13,47 @@ def island_perimeter(grid):
     # scan row by row from left to right till 1 is found
     sum = 0
     for row in grid:
+        prev_one = False
         for col in row:
             if col == 1:
+                if prev_one == True:
+                    continue
                 sum += 1
-                break
+                prev_one = True
+            else:
+                prev_one = False
+                
     # scan row by row from right to left till 1 is found
     for row in grid:
         for col in reversed(row):
             if col == 1:
+                if prev_one == True:
+                    continue
                 sum += 1
-                break
+                prev_one = True
+            else:
+                prev_one = False
 
     # Now scan cols, top to botom
     # Now scan cols, top to bottom
     for col in range(len(grid[0])):
         for row in grid:
             if row[col] == 1:
+                if prev_one == True:
+                    continue
                 sum += 1
-                break
+                prev_one = True
+            else:
+                prev_one = False
 
     # Now scan cols, bottom to top
     for col in range(len(grid[0])):
         for row in reversed(grid):
             if row[col] == 1:
+                if prev_one == True:
+                    continue
                 sum += 1
-                break
-
+                prev_one = True
+            else:
+                prev_one = False
     return sum

@@ -11,6 +11,10 @@ def isWinner(x, nums):
         Return: name of the player that won the most rounds
             If the winner cannot be determined, return None
     """
+    if not nums:
+        return None
+    if not isinstance(nums, list):
+        return None
     score = [0, 0]
     i = 0
     while (i < x):

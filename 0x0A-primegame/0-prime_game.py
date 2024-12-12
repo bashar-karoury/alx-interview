@@ -11,6 +11,8 @@ def isWinner(x, nums):
         Return: name of the player that won the most rounds
             If the winner cannot be determined, return None
     """
+    if x > len(nums):
+        return None
     if not nums:
         return None
     if not isinstance(nums, list):
